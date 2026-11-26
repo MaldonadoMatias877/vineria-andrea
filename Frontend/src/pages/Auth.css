@@ -1,0 +1,125 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  padding: 64px 24px 80px;
+}
+
+.auth__tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  background: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+}
+
+.auth__volver {
+  align-self: flex-start;
+  font-size: 14px;
+  color: var(--texto-suave);
+  text-decoration: none;
+}
+
+.auth__volver:hover {
+  color: var(--vino);
+}
+
+.auth__titulo {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 32px;
+  line-height: 1.15;
+  color: var(--vino-oscuro);
+}
+
+.auth__subtitulo {
+  margin: -8px 0 0;
+  font-size: 15px;
+  color: var(--texto-suave);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.campo input {
+  padding: 10px 12px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--texto);
+  background: var(--crema);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--vino-claro);
+  box-shadow: 0 0 0 3px var(--vino-suave);
+}
+
+.auth__error,
+.auth__exito {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.auth__error {
+  color: var(--vino);
+  background: var(--vino-suave);
+  border: 1px solid var(--vino-claro);
+}
+
+.auth__exito {
+  color: #1f5c3a;
+  background: #e5f4ea;
+  border: 1px solid #a9d8bb;
+}
+
+.auth__enviar {
+  width: 100%;
+  justify-content: center;
+}
+
+.auth__enviar:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.auth__pie {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.auth__pie a {
+  color: var(--vino);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .auth {
+    padding: 32px 16px 56px;
+  }
+
+  .auth__tarjeta {
+    padding: 24px;
+  }
+
+  .auth__titulo {
+    font-size: 26px;
+  }
+}

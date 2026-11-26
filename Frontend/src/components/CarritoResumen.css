@@ -1,0 +1,189 @@
+.carrito {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  text-align: left;
+}
+
+.carrito__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.carrito__titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--vino-oscuro);
+}
+
+.carrito__conteo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--vino);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.carrito__vaciar,
+.carrito__quitar {
+  padding: 4px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.carrito__vaciar:hover,
+.carrito__quitar:hover {
+  color: var(--vino);
+  text-decoration: underline;
+}
+
+.carrito__vaciar:focus-visible,
+.carrito__quitar:focus-visible,
+.carrito__cantidad:focus-visible {
+  outline: 2px solid var(--vino);
+  outline-offset: 2px;
+}
+
+.carrito__vacio {
+  margin: 12px 0 0;
+  color: var(--texto-suave);
+  font-size: 15px;
+}
+
+.carrito__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.carrito__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.carrito__detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.carrito__nombre {
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+
+.carrito__precio {
+  font-size: 14px;
+  color: var(--vino);
+}
+
+.carrito__controles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.carrito__cantidad {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--crema);
+  color: var(--vino);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.carrito__cantidad:hover {
+  border-color: var(--vino-claro);
+  background: var(--vino-suave);
+}
+
+.carrito__unidades {
+  min-width: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.carrito__quitar {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.carrito__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.carrito__total strong {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--vino);
+}
+
+.carrito__finalizar {
+  width: 100%;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.carrito__aviso {
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--vino-suave);
+  color: var(--vino);
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .carrito {
+    padding: 16px;
+  }
+
+  .carrito__item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

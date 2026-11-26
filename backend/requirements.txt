@@ -1,0 +1,10 @@
+# Dependencias del backend - Viñería Gonzalito
+#
+# Crear el entorno virtual e instalar:
+#   python -m venv backend\.venv
+#   backend\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+#
+# Linux/macOS:
+#   backend/.venv/bin/python -m pip install -r backend/requirements.txt
+
+fastapi[standard]==0.158.0

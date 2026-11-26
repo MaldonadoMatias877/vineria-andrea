@@ -1,0 +1,51 @@
+.volver-arriba {
+  position: fixed;
+  right: 24px;
+  bottom: 92px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--vino);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease,
+    background-color 0.15s ease;
+}
+
+.volver-arriba--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.volver-arriba:hover {
+  background: var(--vino-oscuro);
+  transform: translateY(-2px);
+}
+
+.volver-arriba:focus-visible {
+  outline: 3px solid var(--vino);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .volver-arriba {
+    right: 16px;
+    bottom: 78px;
+    width: 40px;
+    height: 40px;
+  }
+}

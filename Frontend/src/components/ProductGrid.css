@@ -1,0 +1,32 @@
+.productos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: left;
+}
+
+@media (max-width: 1024px) {
+  .productos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .productos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.estado {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--texto-suave);
+  font-size: 18px;
+}
+
+.estado--error {
+  color: var(--vino);
+  background: var(--vino-suave);
+  border: 1px solid var(--vino-claro);
+  border-radius: 14px;
+}
