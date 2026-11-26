@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently -k -n FRONTEND,BACKEND -c blue,green \"pnpm --prefix Frontend run dev\" \"pnpm run dev:backend\"",
-    "dev:backend": "backend\\.venv\\Scripts\\python.exe -m uvicorn main:app --app-dir backend --reload --reload-dir backend"
+    "dev:backend": "node scripts/dev-backend.mjs"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
