@@ -1,0 +1,106 @@
+.categorias__desktop {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.categorias__movil {
+  display: none;
+}
+
+.categorias__separador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+}
+
+.categorias__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--vino-claro);
+  border-radius: 12px;
+  background: var(--papel);
+  color: var(--vino);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.categorias__toggle:hover {
+  background: var(--vino-suave);
+}
+
+.categorias__toggle:focus-visible {
+  outline: 2px solid var(--vino);
+  outline-offset: 2px;
+}
+
+.categorias__etiqueta {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--vino-oscuro);
+}
+
+.categorias__lista {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 8px;
+  list-style: none;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--papel);
+  box-shadow: var(--sombra);
+}
+
+.categorias__lista[hidden] {
+  display: none;
+}
+
+.categorias__lista .categorias__boton {
+  width: 100%;
+  justify-content: flex-start;
+  border-color: transparent;
+  background: transparent;
+  color: var(--texto);
+}
+
+.categorias__lista .categorias__boton:hover {
+  background: var(--vino-suave);
+  color: var(--vino);
+}
+
+.categorias__boton.categorias__boton--activo,
+.categorias__lista .categorias__boton.categorias__boton--activo {
+  background: var(--vino);
+  border-color: var(--vino);
+  color: #fff;
+}
+
+.categorias__boton.categorias__boton--activo:hover,
+.categorias__lista .categorias__boton.categorias__boton--activo:hover {
+  background: var(--vino-oscuro);
+  border-color: var(--vino-oscuro);
+  color: #fff;
+}
+
+@media (max-width: 1023px) {
+  .categorias__desktop {
+    display: none;
+  }
+
+  .categorias__movil {
+    display: block;
+  }
+}

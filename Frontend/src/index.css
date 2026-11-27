@@ -47,14 +47,6 @@ body {
   padding: 32px 24px 80px;
 }
 
-.inicio__cabecera {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
 .inicio__barra {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -77,22 +69,6 @@ body {
   font-weight: 600;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-}
-
-.inicio__cabecera h2 {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 44px;
-  line-height: 1.1;
-  font-weight: 600;
-  color: var(--vino-oscuro);
-}
-
-.inicio__bajada {
-  margin: 0;
-  max-width: 56ch;
-  font-size: 18px;
-  color: var(--texto-suave);
 }
 
 .inicio__acciones {
@@ -175,7 +151,4 @@ body {
     justify-content: space-between;
   }
 
-  .inicio__cabecera h2 {
-    font-size: 32px;
-  }
 }

@@ -4,7 +4,12 @@ import type { Producto } from '../types/producto';
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
-function ProductGrid() {
+interface ProductGridProps {
+  categoria?: string | null;
+  onLimpiarFiltro?: () => void;
+}
+
+function ProductGrid({ categoria = null, onLimpiarFiltro }: ProductGridProps) {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,9 +54,30 @@ function ProductGrid() {
     return <p className="estado">No hay productos disponibles.</p>;
   }
 
+  const visibles = categoria
+    ? productos.filter((producto) => producto.category === categoria)
+    : productos;
+
+  if (visibles.length === 0) {
+    return (
+      <div className="estado estado--vacio">
+        <p>No hay productos en {categoria}.</p>
+        {onLimpiarFiltro && (
+          <button
+            type="button"
+            className="boton boton--secundario"
+            onClick={onLimpiarFiltro}
+          >
+            Ver todos
+          </button>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="productos">
-      {productos.map((producto) => (
+      {visibles.map((producto) => (
         <ProductCard key={producto.id} producto={producto} />
       ))}
     </div>
