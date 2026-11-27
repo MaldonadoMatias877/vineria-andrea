@@ -1,30 +1,33 @@
 import hashlib
-import json
+import os
 import secrets
-import threading
-from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
+from database import get_db
+from db_models import ProductoDB, UsuarioDB
 from models import Producto, Usuario, UsuarioCrear, UsuarioIngreso
 
-SEED_PATH = Path(__file__).parent / "seed.json"
+_ORIGENES_DEV = ["http://localhost:5173", "http://127.0.0.1:5173"]
+_origenes_configurados = os.getenv("ALLOWED_ORIGINS")
+ORIGENES_PERMITIDOS = (
+    [origen.strip() for origen in _origenes_configurados.split(",") if origen.strip()]
+    if _origenes_configurados
+    else _ORIGENES_DEV
+)
 
 app = FastAPI(title="MI API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=ORIGENES_PERMITIDOS,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
-    )
-
-# Usuarios en memoria: se pierden al reiniciar el backend.
-_usuarios: list[dict] = []
-_siguiente_id = 1
-_usuarios_lock = threading.Lock()
+    allow_headers=["*"],
+)
 
 _ITERACIONES_HASH = 100_000
 
@@ -48,64 +51,68 @@ def _verificar_hash(password: str, almacenado: str) -> bool:
     return secrets.compare_digest(calculado, bytes.fromhex(digest_hex))
 
 
-def _a_publico(usuario: dict) -> Usuario:
+def _a_publico(usuario: UsuarioDB) -> Usuario:
     return Usuario(
-        id=usuario["id"],
-        nombre=usuario["nombre"],
-        email=usuario["email"],
-        telefono=usuario["telefono"],
+        id=usuario.id,
+        nombre=usuario.nombre,
+        email=usuario.email,
+        telefono=usuario.telefono,
     )
 
 
-@app.get("/api/productos", response_model=list[Producto])
-def listar_productos():
-    if not SEED_PATH.exists():
-        raise HTTPException(
-            status_code=503,
-            detail="No existe seed.json. Ejecuta: python backend/seed.py"
-        )
+def _a_producto(producto: ProductoDB) -> Producto:
+    return Producto(
+        id=producto.id,
+        title=producto.title,
+        price=float(producto.price),
+        description=producto.description,
+        category=producto.category,
+        image=producto.image,
+        rating={"rate": producto.rating_rate, "count": producto.rating_count},
+    )
 
-    return json.loads(SEED_PATH.read_text(encoding="utf-8"))
+
+@app.get("/health")
+def health(db: Session = Depends(get_db)) -> dict[str, str]:
+    db.execute(select(1))
+    return {"status": "ok"}
+
+
+@app.get("/api/productos", response_model=list[Producto])
+def listar_productos(db: Session = Depends(get_db)) -> list[Producto]:
+    productos = db.scalars(select(ProductoDB).order_by(ProductoDB.id)).all()
+    return [_a_producto(producto) for producto in productos]
 
 
 @app.post("/api/usuarios", response_model=Usuario, status_code=201)
-def registrar_usuario(datos: UsuarioCrear):
-    global _siguiente_id
-
+def registrar_usuario(
+    datos: UsuarioCrear, db: Session = Depends(get_db)
+) -> Usuario:
     email = datos.email.lower().strip()
 
-    with _usuarios_lock:
-        if any(usuario["email"] == email for usuario in _usuarios):
-            raise HTTPException(
-                status_code=409,
-                detail="Ese email ya está registrado"
-            )
+    if db.scalar(select(UsuarioDB).where(UsuarioDB.email == email)) is not None:
+        raise HTTPException(status_code=409, detail="Ese email ya está registrado")
 
-        usuario = {
-            "id": _siguiente_id,
-            "nombre": datos.nombre.strip(),
-            "email": email,
-            "telefono": datos.telefono.strip(),
-            "password_hash": _crear_hash(datos.password),
-        }
-        _usuarios.append(usuario)
-        _siguiente_id += 1
+    usuario = UsuarioDB(
+        nombre=datos.nombre.strip(),
+        email=email,
+        telefono=datos.telefono.strip(),
+        password_hash=_crear_hash(datos.password),
+    )
+    db.add(usuario)
+    db.commit()
+    db.refresh(usuario)
 
     return _a_publico(usuario)
 
 
 @app.post("/api/ingresar", response_model=Usuario)
-def ingresar(datos: UsuarioIngreso):
+def ingresar(datos: UsuarioIngreso, db: Session = Depends(get_db)) -> Usuario:
     email = datos.email.lower().strip()
-
-    with _usuarios_lock:
-        usuario = next(
-            (u for u in _usuarios if u["email"] == email),
-            None,
-        )
+    usuario = db.scalar(select(UsuarioDB).where(UsuarioDB.email == email))
 
     if usuario is None or not _verificar_hash(
-        datos.password, usuario["password_hash"]
+        datos.password, usuario.password_hash
     ):
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
 

@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -k --kill-others-on-fail -n FRONTEND,BACKEND -c blue,green \"pnpm --dir Frontend run dev\" \"pnpm run dev:backend\"",
-    "dev:backend": "node scripts/dev-backend.mjs"
+    "dev": "concurrently -k -n FRONTEND,BACKEND -c blue,green \"pnpm --dir Frontend run dev\" \"pnpm run dev:backend\"",
+    "dev:backend": "node scripts/dev-backend.mjs",
+    "build": "pnpm --dir Frontend build"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
   },
-  "engine": {
-   "node": ">=20"
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }

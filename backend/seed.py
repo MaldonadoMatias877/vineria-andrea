@@ -1,7 +1,7 @@
-import json
-from pathlib import Path
+from sqlalchemy.dialects.postgresql import insert
 
-SEED_PATH = Path(__file__).parent / "seed.json"
+from database import SessionLocal
+from db_models import ProductoDB
 
 PRODUCTOS = [
     {
@@ -35,11 +35,26 @@ PRODUCTOS = [
 
 
 def main() -> None:
-    SEED_PATH.write_text(
-        json.dumps(PRODUCTOS, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    print(f"{len(PRODUCTOS)} productos guardados en {SEED_PATH}")
+    session = SessionLocal()
+    try:
+        for producto in PRODUCTOS:
+            sentencia = insert(ProductoDB).values(
+                id=producto["id"],
+                title=producto["title"],
+                price=producto["price"],
+                description=producto["description"],
+                category=producto["category"],
+                image=producto["image"],
+                rating_rate=producto["rating"]["rate"],
+                rating_count=producto["rating"]["count"],
+            )
+            sentencia = sentencia.on_conflict_do_nothing(index_elements=["id"])
+            session.execute(sentencia)
+
+        session.commit()
+        print(f"{len(PRODUCTOS)} productos verificados en PostgreSQL")
+    finally:
+        session.close()
 
 
 if __name__ == "__main__":
